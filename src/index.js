@@ -31,6 +31,9 @@ server.get("/frases", async (req, res) => {
   const [result] = await conn.query(`
       SELECT frases.texto,
              personajes.nombre AS personaje,
+             personajes.apellido,
+             personajes.ocupacion,
+             personajes.descripcion,
              capitulos.titulo AS capitulo
       FROM frases
       JOIN personajes ON frases.personaje_id = personajes.id
@@ -63,4 +66,22 @@ server.get("/frases/:id", async (req, res) => {
   }
 });
 
-server.post("/frases", async (req, res) => {});
+//Actualizar una frase existente
+server.put("/frases/:id", async (req, res) => {
+  const id = req.params.id;
+  const { texto, marca_tiempo, descripcion, personaje_id, capitulo_id } =
+    req.body;
+
+  try {
+    const conn = await getConnection();
+    const [results] = await conn.query(
+      "UPDATE frases SET texto = ?, marca_tiempo = ?, descripcion = ?, personaje_id = ?, capitulo_id = ? WHERE id = ?",
+      [texto, marca_tiempo, descripcion, personaje_id, capitulo_id, id]
+    );
+    await conn.end();
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
