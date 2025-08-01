@@ -27,8 +27,9 @@ const getConnection = async () => {
 //Endpoints
 
 server.get("/frases", async (req, res) => {
-  const conn = await getConnection();
-  const [result] = await conn.query(`
+  try {
+    const conn = await getConnection();
+    const [result] = await conn.query(`
       SELECT frases.texto,
              personajes.nombre AS personaje,
              personajes.apellido,
@@ -40,8 +41,11 @@ server.get("/frases", async (req, res) => {
       JOIN capitulos ON frases.capitulo_id = capitulos.id
     `);
 
-  await conn.end();
-  res.json(result);
+    await conn.end();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener frases." });
+  }
 });
 
 //Obtener una frase específica
