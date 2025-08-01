@@ -24,7 +24,7 @@ const getConnection = async () => {
   });
 };
 
-//Endpoints
+// Endpoints
 
 server.get("/frases", async (req, res) => {
   try {
@@ -48,7 +48,7 @@ server.get("/frases", async (req, res) => {
   }
 });
 
-//Obtener una frase específica
+// Obtener una frase específica
 
 server.get("/frases/:id", async (req, res) => {
   const id = req.params.id;
@@ -70,7 +70,7 @@ server.get("/frases/:id", async (req, res) => {
   }
 });
 
-//Actualizar una frase existente
+// Actualizar una frase existente
 server.put("/frases/:id", async (req, res) => {
   const id = req.params.id;
   const { texto, marca_tiempo, descripcion, personaje_id, capitulo_id } =
@@ -84,6 +84,28 @@ server.put("/frases/:id", async (req, res) => {
     );
     await conn.end();
 
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+// Eliminar una frase
+server.delete("/frases/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const conn = await getConnection();
+    const [results] = await conn.query("DELETE FROM frases WHERE id = ? ", [
+      id,
+    ]);
+    await conn.end();
+
+    if (results.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Frase no encontrada." });
+    }
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: error });
