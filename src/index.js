@@ -146,6 +146,38 @@ server.post("/frases", async (req, res) => {
   }
 });
 
+// Obtener todas las frases de un personaje específico
+server.get("/frases/personaje/:personaje_id", async (req, res) => {
+  const personajeId = req.params.personaje_id;
+
+  try {
+    const conn = await getConnection();
+    const [result] = await conn.query(
+      `SELECT 
+         frases.texto,
+         frases.personaje_id,
+         personajes.nombre,
+         personajes.apellido
+       FROM frases
+       JOIN personajes ON frases.personaje_id = personajes.id
+       WHERE frases.personaje_id = ?`,
+      [personajeId]
+    );
+    await conn.end();
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Este personaje no tiene frases." });
+    }
+    res.json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error al obtener las frases del personaje." });
+  }
+});
+
 // Listar todos los personajes
 server.get("/personajes", async (req, res) => {
   try {
@@ -156,5 +188,18 @@ server.get("/personajes", async (req, res) => {
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los personajes." });
+  }
+});
+
+// Listar todos los capítulos
+server.get("/capitulos", async (req, res) => {
+  try {
+    const conn = await getConnection();
+    const [result] = await conn.query("SELECT * FROM capitulos");
+
+    await conn.end();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener los capítulos." });
   }
 });
