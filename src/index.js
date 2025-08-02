@@ -84,6 +84,12 @@ server.put("/frases/:id", async (req, res) => {
     );
     await conn.end();
 
+    if (results.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Frase no encontrada." });
+    }
+
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: error });
@@ -107,6 +113,34 @@ server.delete("/frases/:id", async (req, res) => {
         .json({ success: false, message: "Frase no encontrada." });
     }
     res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
+// Crear una nueva frase
+server.post("/frases", async (req, res) => {
+  const { texto, marca_tiempo, descripcion, personaje_id, capitulo_id } =
+    req.body;
+
+  if (!texto || !personaje_id || !capitulo_id) {
+    return res.status(400).json({
+      success: false,
+      message:
+        "Faltan los campos obligatorios: texto, personaje_id o capitulo_id",
+    });
+  }
+  try {
+    const conn = await getConnection();
+    const [results] = await conn.query(
+      "INSERT INTO frases(texto, marca_tiempo, descripcion, personaje_id, capitulo_id) VALUES (?, ?, ?, ?, ?)",
+      [texto, marca_tiempo, descripcion, personaje_id, capitulo_id]
+    );
+    await conn.end();
+    res.status(200).json({
+      success: true,
+      id: results.insertId,
+    });
   } catch (error) {
     res.status(500).json({ error: error });
   }
