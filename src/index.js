@@ -178,6 +178,42 @@ server.get("/frases/personaje/:personaje_id", async (req, res) => {
   }
 });
 
+// Obtener todas las frases de un capítulo específico
+server.get("/frases/capitulo/:capitulo_id", async (req, res) => {
+  const capituloId = req.params.capitulo_id;
+
+  try {
+    const conn = await getConnection();
+    const [result] = await conn.query(
+      `SELECT 
+         frases.texto,
+         personajes.nombre,
+         personajes.apellido,
+         capitulos.titulo AS titulo_capitulo,
+         frases.capitulo_id,
+         capitulos.sinopsis
+       FROM frases
+       JOIN personajes ON frases.personaje_id = personajes.id
+       JOIN capitulos ON frases.capitulo_id = capitulos.id
+       WHERE frases.capitulo_id = ?`,
+      [capituloId]
+    );
+    await conn.end();
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Este capítulo no tiene frases." });
+    }
+
+    res.json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error al obtener las frases del capítulo." });
+  }
+});
+
 // Listar todos los personajes
 server.get("/personajes", async (req, res) => {
   try {
