@@ -238,7 +238,13 @@ server.get("/capitulos", async (req, res) => {
     const [result] = await conn.query("SELECT * FROM capitulos");
 
     await conn.end();
-    res.json(result);
+
+    const formatted = result.map((cap) => ({
+      ...cap,
+      fecha_emision: cap.fecha_emision.toLocaleDateString("en-CA"),
+    }));
+
+    res.json(formatted);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los capítulos." });
   }
