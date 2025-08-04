@@ -9,6 +9,7 @@ const port = process.env.PORT || 4000;
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.use(express.static("web"));
 server.listen(port, () => {
   console.log(`Servidor iniciado en http://localhost:${port}`);
 });
