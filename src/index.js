@@ -21,6 +21,9 @@ const getConnection = async () => {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
 };
 
@@ -44,6 +47,7 @@ server.get("/frases", async (req, res) => {
     await conn.end();
     res.json(result);
   } catch (error) {
+    console.error("ERROR GET /frases:", error);
     res.status(500).json({ error: "Error al obtener frases." });
   }
 });
