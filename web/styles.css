@@ -79,6 +79,8 @@ button:hover {
   border-radius: 5px;
   border: 1px solid #888;
   cursor: pointer;
+  width: fit-content;
+  max-width: 230px;
 }
 
 footer {
