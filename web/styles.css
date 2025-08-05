@@ -23,7 +23,7 @@ h1 {
 }
 
 .btn {
-  background-color: #222;
+  background-color: #004b8d;
   color: white;
   padding: 15px 30px;
   border-radius: 12px;
@@ -35,11 +35,11 @@ h1 {
 }
 
 .btn:hover {
-  background-color: #004b8d;
+  background-color: #1a1a1a;
 }
 
 button {
-  background-color: #1f1f1f;
+  background-color: #004b8d;
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
@@ -50,7 +50,7 @@ button {
 }
 
 button:hover {
-  background-color: #004b8d;
+  background-color: #1a1a1a;
 }
 
 .selectors {
@@ -79,7 +79,7 @@ button:hover {
   border-radius: 5px;
   border: 1px solid #888;
   cursor: pointer;
-  width: fit-content;
+  width: fi;
   max-width: 230px;
 }
 
