@@ -34,7 +34,7 @@ server.get("/frases", async (req, res) => {
   try {
     const conn = await getConnection();
     const [result] = await conn.query(`
-      SELECT frases.texto,
+      SELECT frases.id, frases.texto,
              personajes.nombre AS personaje,
              personajes.apellido,
              personajes.ocupacion,
