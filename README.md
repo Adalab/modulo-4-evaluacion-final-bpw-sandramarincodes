@@ -74,16 +74,7 @@ Devuelve una frase concreta según su ID.
 
 **POST /frases**  
 Crea una nueva frase.  
-**Cuerpo esperado (JSON):**
-```json
-{
-  "texto": "string",
-  "marca_tiempo": "HH:MM:SS",
-  "descripcion": "string",
-  "personaje_id": número,
-  "capitulo_id": número
-}
-```
+
 **PUT /frases/:id**  
 Actualiza una frase existente por su ID.
 
