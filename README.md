@@ -1,5 +1,5 @@
 
-# Simpsons API 🍩
+# Simpsons API (Proyecto Backend) 🍩
 
 
 Este es un proyecto de API REST basado en el universo de **Los Simpson**. Permite consultar frases de la serie, filtrarlas por personaje o capítulo, y realizar operaciones CRUD (crear, leer, actualizar, eliminar).  
